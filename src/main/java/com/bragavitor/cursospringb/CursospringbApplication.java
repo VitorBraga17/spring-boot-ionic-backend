@@ -1,25 +1,8 @@
 package com.bragavitor.cursospringb;
 
-import com.bragavitor.cursospringb.domain.Categoria;
-import com.bragavitor.cursospringb.domain.Cidade;
-import com.bragavitor.cursospringb.domain.Cliente;
-import com.bragavitor.cursospringb.domain.Endereco;
-import com.bragavitor.cursospringb.domain.Estado;
-import com.bragavitor.cursospringb.domain.Pagamento;
-import com.bragavitor.cursospringb.domain.PagamentoComBoleto;
-import com.bragavitor.cursospringb.domain.PagamentoComCartao;
-import com.bragavitor.cursospringb.domain.Pedido;
-import com.bragavitor.cursospringb.domain.Produto;
-import com.bragavitor.cursospringb.domain.enums.EstadoPagamento;
-import com.bragavitor.cursospringb.domain.enums.TipoCliente;
-import com.bragavitor.cursospringb.repositories.CategoriaRepository;
-import com.bragavitor.cursospringb.repositories.CidadeRepository;
-import com.bragavitor.cursospringb.repositories.ClienteRepository;
-import com.bragavitor.cursospringb.repositories.EstadoRepository;
-import com.bragavitor.cursospringb.repositories.PagamentoRepository;
-import com.bragavitor.cursospringb.repositories.PedidoRepository;
-import com.bragavitor.cursospringb.repositories.ProdutoRepository;
-import com.bragavitor.cursospringb.repositories.EnderecoRepository;
+import com.bragavitor.cursospringb.domain.*;
+import com.bragavitor.cursospringb.domain.enums.*;
+import com.bragavitor.cursospringb.repositories.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -48,6 +31,8 @@ public class CursospringbApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursospringbApplication.class, args);
@@ -112,7 +97,19 @@ public class CursospringbApplication implements CommandLineRunner{
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 
-		
+		ItemPedido ip1 = new ItemPedido(ped1,p1,0.00,1,2000.0);
+		ItemPedido ip2 = new ItemPedido(ped1,p3,0.00,2,80.0);
+		ItemPedido ip3 = new ItemPedido(ped2,p2,100.00,1,800.0);
+
+				
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 	}
 
 }
