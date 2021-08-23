@@ -1,7 +1,7 @@
 package com.bragavitor.cursospringb.resources;
 
-import com.bragavitor.cursospringb.domain.Categoria;
-import com.bragavitor.cursospringb.services.CategoriaService;
+import com.bragavitor.cursospringb.domain.Pedido;
+import com.bragavitor.cursospringb.services.PedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value ="/categorias")
-public class CatergoriaResource {
+@RequestMapping(value ="/pedidos")
+public class PedidoResource {
     
     @Autowired
-    private CategoriaService service;
+    private PedidoService service;
 
     @RequestMapping(value = "/{id}",method = RequestMethod.GET)
     public ResponseEntity<?> find(@PathVariable Integer id){
-        Categoria obj = service.find(id);
+        Pedido obj = service.find(id);
         return ResponseEntity.ok().body(obj);
     }
 }
