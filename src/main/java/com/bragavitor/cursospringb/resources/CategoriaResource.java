@@ -1,8 +1,11 @@
 package com.bragavitor.cursospringb.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.bragavitor.cursospringb.domain.Categoria;
+import com.bragavitor.cursospringb.dto.CategoriaDTO;
 import com.bragavitor.cursospringb.services.CategoriaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 @RestController
 @RequestMapping(value ="/categorias")
@@ -46,5 +50,13 @@ public class CategoriaResource {
     public ResponseEntity<Categoria> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<CategoriaDTO>> findAll(){
+        List<Categoria> list = service.findAll();
+        List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj))
+            .collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDto);
     }
 }
