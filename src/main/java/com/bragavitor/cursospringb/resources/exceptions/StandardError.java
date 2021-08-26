@@ -1,4 +1,4 @@
-package com.bragavitor.cursospringb.services.exceptions;
+package com.bragavitor.cursospringb.resources.exceptions;
 
 import java.io.Serializable;
 
