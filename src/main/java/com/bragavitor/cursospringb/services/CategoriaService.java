@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.bragavitor.cursospringb.domain.Categoria;
+import com.bragavitor.cursospringb.dto.CategoriaDTO;
 import com.bragavitor.cursospringb.repositories.CategoriaRepository;
 import com.bragavitor.cursospringb.services.exceptions.DataIntegrityException;
 import com.bragavitor.cursospringb.services.exceptions.ObjectNotFoundException;
@@ -55,4 +56,7 @@ public class CategoriaService {
 
     }
 
+    public Categoria fromDTO(CategoriaDTO objDto){
+        return new Categoria(objDto.getId(),objDto.getNome());
+    }
 }
