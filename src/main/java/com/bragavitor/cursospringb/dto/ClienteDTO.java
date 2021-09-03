@@ -6,9 +6,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import com.bragavitor.cursospringb.domain.Cliente;
+import com.bragavitor.cursospringb.services.validation.ClienteUpdate;
 
 import org.hibernate.validator.constraints.Length;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -21,7 +23,6 @@ public class ClienteDTO implements Serializable {
     @NotEmpty(message = "Preenchimento obrigatorio")
     @Email(message = "Email Invalido")
     private String email;
-
 
     public ClienteDTO(){
 
