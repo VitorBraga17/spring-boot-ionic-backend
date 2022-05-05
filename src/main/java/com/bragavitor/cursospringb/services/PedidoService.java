@@ -1,6 +1,8 @@
 package com.bragavitor.cursospringb.services;
 
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -9,6 +11,7 @@ import com.bragavitor.cursospringb.domain.ItemPedido;
 import com.bragavitor.cursospringb.domain.PagamentoComBoleto;
 import com.bragavitor.cursospringb.domain.Pedido;
 import com.bragavitor.cursospringb.domain.enums.EstadoPagamento;
+import com.bragavitor.cursospringb.repositories.ClienteRepository;
 import com.bragavitor.cursospringb.repositories.ItemPedidoRepository;
 import com.bragavitor.cursospringb.repositories.PagamentoRepository;
 import com.bragavitor.cursospringb.repositories.PedidoRepository;
@@ -35,6 +38,9 @@ public class PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
+    @Autowired
+    private ClienteRepository clienteRepository;
+
     public Pedido find(Integer id) {
         Optional<Pedido> obj = repo.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -45,6 +51,8 @@ public class PedidoService {
     public Pedido insert(Pedido obj) {
         obj.setId(null);
         obj.setInstante(new Date());
+        if(clienteRepository.findById(obj.getCliente().getId()).isPresent())
+            obj.setCliente((clienteRepository.findById(obj.getCliente().getId()).get()));
         obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
         if (obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -55,10 +63,12 @@ public class PedidoService {
         pagamentoRepository.save(obj.getPagamento());
         for(ItemPedido ip : obj.getItens()){
             ip.setDesconto(0.0);
-			ip.setPreço(produtoService.find(ip.getProduto().getId()).getPreco());
+            ip.setProduto(produtoService.find(ip.getProduto().getId()));
+			ip.setPreço(ip.getProduto().getPreco());
             ip.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
+        System.out.println(obj);
         return obj;
     }
 
