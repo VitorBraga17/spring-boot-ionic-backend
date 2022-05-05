@@ -1,6 +1,8 @@
 package com.bragavitor.cursospringb.config;
 
 import com.bragavitor.cursospringb.services.DBService;
+import com.bragavitor.cursospringb.services.EmailService;
+import com.bragavitor.cursospringb.services.MockEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +22,10 @@ public class TestConfig {
         dbService.instantiateTestDatabase();
 
         return true;
+    }
+
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
     }
 }
